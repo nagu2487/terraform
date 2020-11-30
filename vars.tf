@@ -12,3 +12,15 @@ variable "AMIS" {
         us-east-1 = "ami-04d29b6f966df1537"
     }
 }
+
+variable "PATH_TO_PRIVATE_KEY" {
+    default = "key"
+}
+
+variable "PATH_TO_PUBLIC_KEY" {
+    default =  "key.pub"
+}
+
+variable "INSTANCE_USERNAME" {
+    default = "ubuntu"
+}

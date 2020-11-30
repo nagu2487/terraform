@@ -9,9 +9,45 @@
 #     instance_type = "t2.micro"
 # }
 
-resource "aws_instance" "example1" {
+# resource "aws_key_pair" "key" {
+#     key_name = "key"
+#     public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
+# }
+
+
+resource "aws_instance" "foo" {
     ami = "${lookup(var.AMIS,var.AWS_REGION)}"
     instance_type = "t2.micro"
+    # key_name = "${aws_key_pair.key.key_name}"
+    # privisioner "local-exec" {
+    #     command = "echo ${aws_instance.foo.private_ip} >> private_ips.txt"
+    # }
+
+
+    # provisioner "file" {
+    #     source = "script.sh"
+    #     destination = "/tmp/script.sh"
+    # }
+
+    # provisioner "remote-exec" {
+    #     inline = [
+    #         "chmod 777 /tmp/script.sh",
+    #         "sudo /tmp/script.sh"
+    #     ]
+    # }
+    # connection {
+    #     user = "${var.INSTANCE_USERNAME}"
+    #     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    # }
+
 }
 
+output "Public_ip" {
+    value = "${aws_instance.foo.public_ip}"
+    # value = "${aws_instance.foo.private_ip}"
+}
+
+output "Private_ip" {
+    value = "${aws_instance.foo.private_ip}"
+}
 
