@@ -14,11 +14,11 @@ variable "AMIS" {
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
-    default = "key"
+    default = "mykey"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
-    default =  "key.pub"
+    default =  "mykey.pub"
 }
 
 variable "INSTANCE_USERNAME" {

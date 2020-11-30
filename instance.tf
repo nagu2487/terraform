@@ -15,31 +15,48 @@
 # }
 
 
+# resource "aws_instance" "foo" {
+#     ami = "${lookup(var.AMIS,var.AWS_REGION)}"
+#     instance_type = "t2.micro"
+#     # key_name = "${aws_key_pair.key.key_name}"
+#     # privisioner "local-exec" {
+#     #     command = "echo ${aws_instance.foo.private_ip} >> private_ips.txt"
+#     # }
+
+
+#     # provisioner "file" {
+#     #     source = "script.sh"
+#     #     destination = "/tmp/script.sh"
+#     # }
+
+#     # provisioner "remote-exec" {
+#     #     inline = [
+#     #         "chmod 777 /tmp/script.sh",
+#     #         "sudo /tmp/script.sh"
+#     #     ]
+#     # }
+#     # connection {
+#     #     user = "${var.INSTANCE_USERNAME}"
+#     #     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+#     # }
+
+# }
+
+resource "aws_key_pair" "terraform-demo" {
+    key_name = "mykey"
+    public_key = "${file("mykey.pub")}"
+}
+
 resource "aws_instance" "foo" {
     ami = "${lookup(var.AMIS,var.AWS_REGION)}"
-    instance_type = "t2.micro"
-    # key_name = "${aws_key_pair.key.key_name}"
-    # privisioner "local-exec" {
-    #     command = "echo ${aws_instance.foo.private_ip} >> private_ips.txt"
-    # }
-
-
-    # provisioner "file" {
-    #     source = "script.sh"
-    #     destination = "/tmp/script.sh"
-    # }
-
-    # provisioner "remote-exec" {
-    #     inline = [
-    #         "chmod 777 /tmp/script.sh",
-    #         "sudo /tmp/script.sh"
-    #     ]
-    # }
-    # connection {
-    #     user = "${var.INSTANCE_USERNAME}"
-    #     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
-    # }
-
+    instance_type ="t2.micro"
+    key_name="${aws_key_pair.terraform-demo.key_name}"
+    user_data = "${file("script.sh")}"
+    tags = {
+		Name = "Terraform_1"	
+		Batch = "5AM"
+	}
+    
 }
 
 output "Public_ip" {
@@ -47,7 +64,5 @@ output "Public_ip" {
     # value = "${aws_instance.foo.private_ip}"
 }
 
-output "Private_ip" {
-    value = "${aws_instance.foo.private_ip}"
-}
+
 
